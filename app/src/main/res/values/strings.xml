@@ -1,0 +1,53 @@
+<resources>
+    <!-- Application -->
+    <string name="app_name">HealthHub_</string>
+
+    <!-- Buttons -->
+    <string name="btn_continue">Continue</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_sex">Sex</string>
+    <string name="btn_age">Age</string>
+    <string name="btn_weight_plan">Weight Plan</string>
+    <string name="btn_activity_level">Activity Level</string>
+    <string name="btn_weekly_goal">Weekly Goal</string>
+    <string name="btn_weekly_summary">Summary Report</string>
+    <string name="btn_home">Back Button</string>
+
+    <!-- Headlines -->
+    <string name="headline_goals_name">GOALS</string>
+    <string name="headline_weight_loss">Weight Loss</string>
+
+    <!-- Hint -->
+    <string name="hint_email">      Email</string>
+    <string name="hint_password">      Password</string>
+
+    <!-- Labels -->
+    <string name="label_sign_up">Sign Up</string>
+    <string name="label_log_in">Log In</string>
+
+
+    <!-- Text Views -->
+    <string name="action_log_in">Log In</string>
+    <string name="tv_user_weight">Current Weight: X lbs -> Goal Weight: X</string>
+    <string name="tv_full_name">Full Name</string>
+    <string name="tv_goal_date">In X days, you will reach your goal</string>
+    <string name="tv_update_calories">Calories Ate: X -> Calorie Goal: X</string>
+    <string name="tv_update_miles">X Miles Run Today</string>
+    <string name="tv_user_height">User Height</string>
+    <string name="tv_congrats">Congrats!</string>
+    <string name="tv_goal_comment">You reached your goal weight of x</string>
+    <string name="tv_current_weight">Current Weight X</string>
+
+
+    <!-- EditText -->
+    <string name="et_full_name">Full Name</string>
+    <string name="et_heigh_feet">Height: Feet</string>
+    <string name="et_height_inches">Height: Inches</string>
+    <string name="et_goal_weight">Goal Weight</string>
+    <string name="et_age">Age</string>
+    <string name="et_update_weight">Update Weight</string>
+    <string name="et_update_calories">Update Calories</string>
+    <string name="et_update_miles">Miles Run</string>
+    <string name="et_current_weight">Current Weight</string>
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/loseWeight"
+        android:title="Lose Weight" />
+
+<!--    <item-->
+<!--        android:id="@+id/maintainWeight"-->
+<!--        android:title="Maintain Weight" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/gainWeight"-->
+<!--        android:title="Gain Weight" />-->
+</menu>
+

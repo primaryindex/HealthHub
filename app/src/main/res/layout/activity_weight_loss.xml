@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WeightLossActivity">
+
+    <TextView
+        android:id="@+id/info_WeightLoss"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/teal_200"
+        android:text="@string/headline_weight_loss"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="94dp" />
+
+    <EditText
+        android:id="@+id/etFullName"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_full_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_WeightLoss" />
+
+    <EditText
+        android:id="@+id/et_Age"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_age"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etFullName" />
+
+
+    <EditText
+        android:id="@+id/etHeightFt"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_heigh_feet"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_Age" />
+
+    <EditText
+        android:id="@+id/etHeightIn"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_height_inches"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etHeightFt" />
+
+    <EditText
+        android:id="@+id/etcurrentWeight"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_current_weight"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etHeightIn" />
+
+    <EditText
+        android:id="@+id/etWeightGoal"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/et_goal_weight"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etcurrentWeight" />
+
+    <Button
+        android:id="@+id/btnWeeklyGoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/btn_weekly_goal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etWeightGoal"
+        app:layout_constraintVertical_bias="0.177" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnWeeklyGoals"
+        app:layout_constraintVertical_bias="0.868" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

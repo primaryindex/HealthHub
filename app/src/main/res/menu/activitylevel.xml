@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notVeryActive"
+        android:title="Not Very Active" />
+
+    <item
+        android:id="@+id/lightlyActive"
+        android:title="Lightly Active" />
+
+    <item
+        android:id="@+id/active"
+        android:title="Active" />
+
+    <item
+        android:id="@+id/veryActive"
+        android:title="Very Active" />
+</menu>

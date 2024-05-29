@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/halfPoundPerWeek"
+        android:title="Lose 0.5 pound/week" />
+
+    <item
+        android:id="@+id/onePoundPerWeek"
+        android:title="Lose 1 pound/week" />
+
+    <item
+        android:id="@+id/oneAndHalfPoundPerWeek"
+        android:title="Lose 1.5 pounds/week" />
+
+    <item
+        android:id="@+id/twoPoundsPerWeek"
+        android:title="Lose 2 pounds/week" />
+</menu>
