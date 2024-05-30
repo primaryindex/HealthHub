@@ -9,16 +9,23 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.ktx.auth
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid  // Make sure the user is logged in
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+    private var calories: Double = 0.0
+    private var calorDeficit: Double = 0.0
+    private var miles: Double = 0.0
+    private lateinit var auth : FirebaseAuth
     data class UserProfile(
         val fullName: String?,
         val heightFeet: Int?,
@@ -32,15 +39,13 @@ class HomeActivity : AppCompatActivity() {
 
     private var userProfile: UserProfile? = null
 
-    private var calories: Double = 0.0
-    private var calorDeficit: Double = 0.0
-    private var miles: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        //Update the UserUI to zero when new date
+        auth = Firebase.auth
+
         initializeDailyLogsIfNeeded {
             fetchUserData {
                 updateUI()
@@ -58,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
 
         //go to summary report
         val summaryReportButton = findViewById<Button>(R.id.btnSummary)
+        val signOutButton = findViewById<Button>(R.id.btnSignOut)
 
 
         updateWeightButton.setOnClickListener {
@@ -105,6 +111,13 @@ class HomeActivity : AppCompatActivity() {
 
         summaryReportButton.setOnClickListener {
             val intent = Intent(this@HomeActivity, SummaryReportActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        signOutButton.setOnClickListener {
+            auth.signOut()
+            val intent = Intent( this@HomeActivity, LogInActivity::class.java)
             startActivity(intent)
             finish()
         }
