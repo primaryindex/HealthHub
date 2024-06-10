@@ -7,7 +7,6 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.example.healthhub_.databinding.ActivityLogInBinding
-import com.example.healthhub_.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

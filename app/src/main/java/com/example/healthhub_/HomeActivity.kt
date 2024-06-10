@@ -16,7 +16,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.auth.ktx.auth
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
@@ -275,8 +274,6 @@ class HomeActivity : AppCompatActivity() {
                             (10 * weightKg) + (6.25 * heightCm) - (5 * it.age) - 161
                         }
                         calorieIntakeActivityLevel(bmr)
-                    } else {
-                        Toast.makeText(this@HomeActivity, "Some user data is missing!", Toast.LENGTH_SHORT).show()
                     }
                 }
 
