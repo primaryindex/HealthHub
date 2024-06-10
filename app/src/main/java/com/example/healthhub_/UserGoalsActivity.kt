@@ -1,3 +1,13 @@
+// UserGoalsActivity.kt
+//
+// User Goals Activity handles the user personal health goals and profile (sex, activity level, and
+// weight goal) and saves the user profile to the Firebase Realtime Database
+//
+// Gustavo Amaya
+// May 2024
+//
+// Version 1
+
 package com.example.healthhub_
 
 import android.content.Intent
@@ -11,10 +21,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class UserGoalsActivity : AppCompatActivity() {
-    //find out what these mean
-    val database = Firebase.database.reference
 
-    //Buttons To Respective User Goals
+    //Buttons To Respective User Goals and Profile
     lateinit var buttonSex: Button
     lateinit var buttonActivityLevel: Button
     lateinit var buttonWeightGoal: Button
@@ -26,6 +34,8 @@ class UserGoalsActivity : AppCompatActivity() {
     var weightGoal: String? = null
     var userAge: Int? = null
 
+    // Initializes activity, setting the layout of the activity, sets up button listeners for selec-
+    // ting user goals and navigating to respective activities
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_goals)
@@ -81,7 +91,8 @@ class UserGoalsActivity : AppCompatActivity() {
         }
     }
 
-
+    // checkAllSelectionsMade handle the users selections and saves the user profile to the database
+    // if complete
     private fun checkAllSelectionsMade() {
         if (activityLevel != null && userSex != null && weightGoal != null) {
             // Save user data to Firebase and show Toast for confirmation
@@ -93,6 +104,7 @@ class UserGoalsActivity : AppCompatActivity() {
         }
     }
 
+    // saveUserProfileToDatabase saves the user's profile data to Firebase database
     private fun saveUserProfileToDatabase() {
         //Store User
         val userData = hashMapOf(

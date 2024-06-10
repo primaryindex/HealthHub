@@ -1,4 +1,9 @@
- package com.example.healthhub_
+// SignUpActivity.kt
+//
+// Sign Up Activity handles user registation, validating input fields and creating a new user acc-
+// ount using the Firebase Database
+
+package com.example.healthhub_
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,28 +18,30 @@ import com.google.firebase.ktx.Firebase
 
 
  class SignUpActivity : AppCompatActivity() {
-
+     // Declares instance for firebase authentication and view binding
     private lateinit var auth : FirebaseAuth
     private lateinit var binding: ActivitySignUpBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+     // initialize the activity, sets up view binding, and initializes Firebase Auth
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //set view binding
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
 
+        // Click listener for sign up button, retrieves input data, validates it, and attempts to
+        // create a new user account using Firebase Auth
         binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             if(checkAllFields()){
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                    //if successful account is created
-                    //is also signed in
                     if(it.isSuccessful){
-                        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@SignUpActivity, UserGoalsActivity::class.java)
+                        Toast.makeText(this,
+                                  "Account created successfully!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@SignUpActivity,
+                                            UserGoalsActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -47,6 +54,7 @@ import com.google.firebase.ktx.Firebase
         }
     }
 
+     // checkAllFields handles the validating the email and password fields and handles errors
      private fun checkAllFields(): Boolean {
          val email = binding.etEmail.text.toString()
          if(binding.etEmail.text.toString() == ""){

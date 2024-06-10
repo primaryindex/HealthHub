@@ -1,3 +1,13 @@
+// WeightLossActivity.kt
+//
+// Weight Loss Activity handles the user's weekly weight loss goals, physical details, and saves the
+// data to the Firebase database.
+//
+// Gustavo Amaya
+// May 2024
+//
+// Version 1
+
 package com.example.healthhub_
 
 import android.content.Intent
@@ -17,21 +27,18 @@ class WeightLossActivity : AppCompatActivity() {
     lateinit var weeklyWeightGoal: Button
     var buttonWeeklyWeightGoal: String? = null
 
+    // Initializes activity, setting the layout of the activity, and sets up button listeners for
+    // weekly goals and submitting information
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weight_loss)
 
-        //Find the button weekly goal
         weeklyWeightGoal = findViewById(R.id.btnWeeklyGoals)
-
-        //This will take in the information from user for their weekly goal weight
         weeklyWeightGoal.setOnClickListener {
             val popupMenu = PopupMenu(this@WeightLossActivity, weeklyWeightGoal)
 
-            //Inflating pop up menu from pop_menu.xml file
             popupMenu.menuInflater.inflate(R.menu.weeklygoal, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener {  menuItem ->
-                // Toast message on menu item clicked
                 Toast.makeText(
                     this@WeightLossActivity,
                     "You clicked " + menuItem.title,
@@ -40,7 +47,6 @@ class WeightLossActivity : AppCompatActivity() {
                 buttonWeeklyWeightGoal = menuItem.title.toString()
                 true
             }
-            // Show the popup menu
             popupMenu.show()
         }
 
@@ -60,30 +66,29 @@ class WeightLossActivity : AppCompatActivity() {
         }
     }
 
+    // validateInput checks the user input for height, age, and weight for correct input
     private fun validateInput(heightFt: Int, userAge: Int, heightIn: Int, currentWeight: Double, goalWeight: Double): Boolean {
         if (heightFt < 3 || heightFt > 8) {
             Toast.makeText(this, "Please enter a valid height in feet.", Toast.LENGTH_SHORT).show()
             return false
         }
-
         if (userAge < 18 || userAge > 99) {
             Toast.makeText(this, "Please enter a valid age.", Toast.LENGTH_SHORT).show()
             return false
         }
-
         if (heightIn < 0 || heightIn > 11) {
             Toast.makeText(this, "Please enter a valid height in inches.", Toast.LENGTH_SHORT).show()
             return false
         }
-
         if (currentWeight < 50.0 || currentWeight > 300.0 || goalWeight < 50.0 || goalWeight > 300.0) {
             Toast.makeText(this, "Please enter a valid weight.", Toast.LENGTH_SHORT).show()
             return false
         }
-
         return true
     }
 
+    // sendUserDataToFirebase saves the user's profile data, weight log, caloric log, and mile log
+    // to the Firebase database
     private fun sendUserDataToFirebase(fullName: String, userAge: Int, heightFt: Int, heightIn: Int, currentWeight: Double, goalWeight: Double, weeklyGoal: String?) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId == null) {
@@ -101,7 +106,6 @@ class WeightLossActivity : AppCompatActivity() {
             "weeklyGoal" to weeklyGoal
         )
 
-        //time format for database for user weight and caloric logs
         val currentDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = currentDateFormat.format(Date())
         val yearWeekFormat = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault())

@@ -1,3 +1,12 @@
+// LogInActivity.kt
+//
+//  Log In Activity handles the user login process, inputs validation and Firebase authentication
+//
+// Gustavo Amaya
+// May 2024
+//
+// Version 1
+
 package com.example.healthhub_
 
 import android.content.Intent
@@ -12,10 +21,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LogInActivity : AppCompatActivity() {
-    //find out what these mean
+    // Declares instance for firebase authentication and view binding
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLogInBinding
 
+    // initialize the activity, sets up view binding, and initializes Firebase Auth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,10 +35,14 @@ class LogInActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        // Click listener for the login button, retrieves input data, and initiates the login
         binding.btnLogIn.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             if(checkAllField()) {
+
+                // Attempts to sign in using Firebase Auth, displays a success message, navigates to
+                // "HomeActivity" if successful, and logs an error if unsuccessful
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if(it.isSuccessful){
                         //if successful already sign in
@@ -48,6 +62,8 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
+    // Validates the email and password fields, checking for required fields, valid email format,
+    // minimum password length. Displays error messages if validation fails
     private fun checkAllField(): Boolean {
         val email = binding.etEmail.text.toString()
         if(binding.etEmail.text.toString() == ""){

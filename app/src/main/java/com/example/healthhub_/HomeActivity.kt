@@ -1,3 +1,13 @@
+// HomeActivity.kt
+//
+// Home Activity handles user health data (weight, caloric intake, miles run) using the Firebase Re-
+// al time Database for data storage and retrieval.
+//
+// Gustavo Amaya
+// May 2024
+//
+// Version 1
+
 package com.example.healthhub_
 
 import android.content.Intent
@@ -19,12 +29,18 @@ import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
+
+    // Declares instance for firebase authentication
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    // Handles authentication
+    private lateinit var auth : FirebaseAuth
 
     private var calories: Double = 0.0
     private var calorDeficit: Double = 0.0
     private var miles: Double = 0.0
-    private lateinit var auth : FirebaseAuth
+    private var userProfile: UserProfile? = null
+
+    // Data class that handles user profile information
     data class UserProfile(
         val fullName: String?,
         val heightFeet: Int?,
@@ -36,9 +52,7 @@ class HomeActivity : AppCompatActivity() {
         val activityLevel: String?,
         val weeklyGoal: String?)
 
-    private var userProfile: UserProfile? = null
-
-
+    // Initializes activity, setting the layout of the Home page and Firebase authentication
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -52,19 +66,9 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        // Weight input button, handles new weight input from user
         val weightInput = findViewById<EditText>(R.id.etUpdateWeight)
-        val caloricInput = findViewById<EditText>(R.id.etUpdateCalories)
         val updateWeightButton = findViewById<Button>(R.id.btnUpdateWeight)
-        val updateCaloriesButton = findViewById<Button>(R.id.btnUpdateCalories)
-        //todo miles
-        val mileInput = findViewById<EditText>(R.id.etUpdateMiles)
-        val updateMileButton = findViewById<Button>(R.id.btnUpdateMiles)
-
-        //go to summary report
-        val summaryReportButton = findViewById<Button>(R.id.btnSummary)
-        val signOutButton = findViewById<Button>(R.id.btnSignOut)
-
-
         updateWeightButton.setOnClickListener {
             val newWeightStr = weightInput.text.toString()
             if (newWeightStr.isNotEmpty()) {
@@ -76,10 +80,14 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                Toast.makeText(this, "Please enter a valid weight", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                           "Please enter a valid weight", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Caloric input button, handles new caloric input from user
+        val caloricInput = findViewById<EditText>(R.id.etUpdateCalories)
+        val updateCaloriesButton = findViewById<Button>(R.id.btnUpdateCalories)
         updateCaloriesButton.setOnClickListener {
             val newCaloricStr = caloricInput.text.toString()
             if (newCaloricStr.isNotEmpty()) {
@@ -90,10 +98,14 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                Toast.makeText(this, "Please enter a valid caloric number", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                           "Please enter a valid caloric number", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Mile input button, handles new miles input from user
+        val mileInput = findViewById<EditText>(R.id.etUpdateMiles)
+        val updateMileButton = findViewById<Button>(R.id.btnUpdateMiles)
         updateMileButton.setOnClickListener {
             val newMileStr = mileInput.text.toString()
             if(newMileStr.isNotEmpty()) {
@@ -104,16 +116,20 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                Toast.makeText(this, "Please enter a valid caloric number", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                           "Please enter a valid caloric number", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Summary report button that takes user to the Summary Report Activity
+        val summaryReportButton = findViewById<Button>(R.id.btnSummary)
         summaryReportButton.setOnClickListener {
             val intent = Intent(this@HomeActivity, SummaryReportActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+        val signOutButton = findViewById<Button>(R.id.btnSignOut)
         signOutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent( this@HomeActivity, LogInActivity::class.java)
@@ -123,81 +139,98 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    // FetchUSerData method retrieves user data from Firebase; user physical, activity, caloric, and
+    // mile profile.
     private fun fetchUserData(callback: () -> Unit) {
-        // Format for user-caloric-log
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val yearWeek = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault()).format(Date())
 
-        // References to Nodes in Database
-        val userPhysicalProfileRef = FirebaseDatabase.getInstance().getReference("user-physical-profile/$userId")
-        val userActivityProfileRef = FirebaseDatabase.getInstance().getReference("user-activity-profile/$userId")
-        val caloricLogRef = FirebaseDatabase.getInstance().getReference("user-caloric-log/$userId/$yearWeek/$currentDate")
-        val mileLogRef = FirebaseDatabase.getInstance().getReference("user-mile-log/$userId/$yearWeek/$currentDate")
+        // References to children in Database
+        val userPhysicalProfileRef = FirebaseDatabase.getInstance().getReference(
+                                                               "user-physical-profile/$userId")
+        val userActivityProfileRef = FirebaseDatabase.getInstance().getReference(
+                                                               "user-activity-profile/$userId")
+        val caloricLogRef = FirebaseDatabase.getInstance().getReference(
+                                             "user-caloric-log/$userId/$yearWeek/$currentDate")
+        val mileLogRef = FirebaseDatabase.getInstance().getReference(
+                                                "user-mile-log/$userId/$yearWeek/$currentDate")
 
         userPhysicalProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(physicalProfileSnapshot: DataSnapshot) {
                 val fullName = physicalProfileSnapshot.child("fullName").value as String?
-                val heightFeet = physicalProfileSnapshot.child("heightFt").value.toString().toIntOrNull()
-                val heightInches = physicalProfileSnapshot.child("heightIn").value.toString().toIntOrNull()
-                val currentWeight = physicalProfileSnapshot.child("currentWeight").value.toString().toDoubleOrNull()
-                val goalWeight = physicalProfileSnapshot.child("goalWeight").value.toString().toDoubleOrNull()
-                val age = physicalProfileSnapshot.child("age").value.toString().toIntOrNull()
-                val weeklyGoal = physicalProfileSnapshot.child("weeklyGoal").value as String?
+                val heightFeet = physicalProfileSnapshot.child(
+                                                     "heightFt").value.toString().toIntOrNull()
+                val heightInches = physicalProfileSnapshot.child(
+                                                     "heightIn").value.toString().toIntOrNull()
+                val currentWeight = physicalProfileSnapshot.child(
+                                             "currentWeight").value.toString().toDoubleOrNull()
+                val goalWeight = physicalProfileSnapshot.child(
+                                                "goalWeight").value.toString().toDoubleOrNull()
+                val age = physicalProfileSnapshot.child(
+                                                          "age").value.toString().toIntOrNull()
+                val weeklyGoal = physicalProfileSnapshot.child(
+                                                                 "weeklyGoal").value as String?
 
                 userActivityProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(activityProfileSnapshot: DataSnapshot) {
                         val sex = activityProfileSnapshot.child("sex").value as String?
-                        val activityLevel = activityProfileSnapshot.child("activityLevel").value as String?
+                        val activityLevel = activityProfileSnapshot.child("activityLevel").value
+                                                                                          as String?
 
                         caloricLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(caloricSnapshot: DataSnapshot) {
-                                val caloriesFromDb = caloricSnapshot.child("calories").value.toString().toDoubleOrNull() ?: 0.0
+                                val caloriesFromDb = caloricSnapshot.child(
+                                           "calories").value.toString().toDoubleOrNull() ?: 0.0
 
-                                mileLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                mileLogRef.addListenerForSingleValueEvent(object:ValueEventListener{
                                     override fun onDataChange(mileSnapshot: DataSnapshot) {
-                                        val milesFromDb = mileSnapshot.child("miles").value.toString().toDoubleOrNull() ?: 0.0
-
+                                        val milesFromDb = mileSnapshot.child(
+                                              "miles").value.toString().toDoubleOrNull() ?: 0.0
                                         // Update class variables
                                         calories = caloriesFromDb
                                         miles = milesFromDb
-
                                         // Passing Data to the UserProfile data class
                                         userProfile = UserProfile(
-                                            fullName, heightFeet, heightInches, currentWeight, goalWeight, age, sex, activityLevel, weeklyGoal
+                                                                    fullName, heightFeet,
+                                                                    heightInches, currentWeight,
+                                                                    goalWeight, age,
+                                                                    sex, activityLevel, weeklyGoal
                                         )
-
                                         // Trigger callback after all data is fetched
                                         callback()
                                     }
-
                                     override fun onCancelled(error: DatabaseError) {
-                                        Log.e("FirebaseDebug", "Error accessing user-mile-log: ${error.message}")
+                                        Log.e("FirebaseDebug",
+                                             "Error accessing user-mile-log: ${error.message}")
                                     }
                                 })
                             }
-
                             override fun onCancelled(error: DatabaseError) {
-                                Log.e("FirebaseDebug", "Error accessing user-caloric-log: ${error.message}")
+                                Log.e("FirebaseDebug",
+                                          "Error accessing user-caloric-log: ${error.message}")
                             }
                         })
                     }
-
                     override fun onCancelled(error: DatabaseError) {
-                        Log.e("FirebaseDebug", "Error accessing user-activity-profile: ${error.message}")
+                        Log.e("FirebaseDebug",
+                                     "Error accessing user-activity-profile: ${error.message}")
                     }
                 })
             }
-
             override fun onCancelled(error: DatabaseError) {
-                Log.e("FirebaseDebug", "Error accessing user-physical-profile: ${error.message}")
+                Log.e("FirebaseDebug",
+                                     "Error accessing user-physical-profile: ${error.message}")
             }
         })
     }
 
+    // pdateUI mehtod updates the UI elements with the fetched data, ensuring latest user informa-
+    // tion
     private fun updateUI() {
         userProfile?.let {
             val userWeight = """
-            Current Weight: ${it.currentWeight?.let { "%.1f".format(it) }} lbs -> Goal Weight: ${it.goalWeight?.let {"%.1f".format(it) }} lbs
+            Current Weight: ${it.currentWeight?.let { "%.1f".format(it) }} lbs -> 
+                              Goal Weight: ${it.goalWeight?.let {"%.1f".format(it) }} lbs
         """.trimIndent()
 
             val userHeight = """
@@ -220,32 +253,40 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    // updateWeight method updates the user's weight in the Firebase and logs changes
     private fun updateWeight(newWeight: Double, callback: () -> Unit) {
-        val userPhysicalProfileRef = FirebaseDatabase.getInstance().getReference("user-physical-profile/$userId")
+        val userPhysicalProfileRef = FirebaseDatabase.getInstance().getReference(
+                                                               "user-physical-profile/$userId")
         userPhysicalProfileRef.child("currentWeight").setValue(newWeight).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(this, "Weight updated successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                           "Weight updated successfully", Toast.LENGTH_SHORT).show()
                 checkGoalWeight(newWeight)
                 callback()
             } else {
-                Toast.makeText(this, "Failed to update weight", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                           "Failed to update weight", Toast.LENGTH_SHORT).show()
             }
         }
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = sdf.format(Date())
         val yearWeekFormat = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault())
         val yearWeek = yearWeekFormat.format(Date())
-        val weightLogRef = FirebaseDatabase.getInstance().getReference("user-weight-log/$userId/$yearWeek/$currentDate")
+        val weightLogRef = FirebaseDatabase.getInstance().getReference(
+                                              "user-weight-log/$userId/$yearWeek/$currentDate")
         val logEntry = mapOf("weight" to newWeight)
         weightLogRef.setValue(logEntry).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(this, "Weight log updated successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                                  "Weight log updated successfully", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Failed to log weight update", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                                      "Failed to log weight update", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    // checkGoalWeight handles event when user reaches their set Weight Loss Goal
     private fun checkGoalWeight(newWeight: Double) {
         userProfile?.let {
             if (newWeight <= it.goalWeight!!) {
@@ -255,17 +296,24 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    // calculateBMR uses the user's profile data, (height, sex, and age) and and computes the Basal
+    // Metabolic Rate to be used for user's caloric intake
     private fun calculateBMR() {
         userProfile?.let {
-            val currentYearWeek = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault()).format(Date())
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val userWeightLogRef = FirebaseDatabase.getInstance().getReference("user-weight-log/$userId")
+            val currentYearWeek = SimpleDateFormat(
+                                            "yyyy-'W'ww", Locale.getDefault()).format(Date())
+            val currentDate = SimpleDateFormat(
+                                            "yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val userWeightLogRef = FirebaseDatabase.getInstance().getReference(
+                                                                     "user-weight-log/$userId")
             userWeightLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(weightSnapshot: DataSnapshot) {
-                    val weightData = weightSnapshot.child(currentYearWeek).child(currentDate).child("weight")
+                    val weightData = weightSnapshot.child(currentYearWeek).child(currentDate).child(
+                                                                                      "weight")
                     val weight = weightData.value.toString().toDoubleOrNull()
 
-                    if (weight != null && it.heightFeet != null && it.heightInches != null && it.sex != null && it.age != null) {
+                    if (weight != null && it.heightFeet != null && it.heightInches != null && it.sex
+                                                                        != null && it.age != null) {
                         val heightCm = (it.heightFeet * 30.48) + (it.heightInches * 2.54)
                         val weightKg = weight * 0.453
                         val bmr = if (it.sex == "Male") {
@@ -276,14 +324,16 @@ class HomeActivity : AppCompatActivity() {
                         calorieIntakeActivityLevel(bmr)
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("FirebaseDebug", "Error accessing user-weight-log: ${error.message}")
+                    Log.e("FirebaseDebug",
+                         "Error accessing user-weight-log: ${error.message}")
                 }
             })
         }
     }
 
+    // calorieIntakeActivityLevel estimates the daily caloric needs for user according to user's
+    // activity level to be used in calorieWeeklyGoal method
     private fun calorieIntakeActivityLevel(bmr: Double) {
         userProfile?.let {
             when (it.activityLevel) {
@@ -296,6 +346,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    // calorieWeeklyGoal finalizes the weekly caloric needs based on weekly's weight loss goal
     private fun calorieWeeklyGoal(caloric: Double) {
         userProfile?.let {
             when (it.weeklyGoal) {
@@ -312,13 +363,14 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    // updateCalories updates the user's caloric intake log in Firebase
     private fun updateCalories(newCalories: Int, callback: () -> Unit) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = sdf.format(Date())
         val yearWeekFormat = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault())
         val yearWeek = yearWeekFormat.format(Date())
-        val caloricLogRef = FirebaseDatabase.getInstance().getReference("user-caloric-log/$userId/$yearWeek/$currentDate")
-
+        val caloricLogRef = FirebaseDatabase.getInstance().getReference(
+                                             "user-caloric-log/$userId/$yearWeek/$currentDate")
         // Fetch the current calories from the database
         caloricLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -329,47 +381,56 @@ class HomeActivity : AppCompatActivity() {
                 val logEntry = mapOf("calories" to updatedCalories)
                 caloricLogRef.setValue(logEntry).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this@HomeActivity, "Calories log updated successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity,
+                                 "Calories log updated successfully", Toast.LENGTH_SHORT).show()
                         // Update the local calories variable
                         calories = updatedCalories.toDouble()
                         callback()
                     } else {
-                        Toast.makeText(this@HomeActivity, "Failed to log calories update", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity,
+                                    "Failed to log calories update", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("FirebaseDebug", "Error accessing user-caloric-log: ${error.message}")
+                Log.e("FirebaseDebug","Error accessing user-caloric-log: ${error.message}")
             }
         })
     }
 
+    // updateMiles updates the user's miles intake log in Firebase
     private fun updateMiles(newMiles: Double, callback: () -> Unit) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = sdf.format(Date())
         val yearWeekFormat = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault())
         val yearWeek = yearWeekFormat.format(Date())
-        val mileLogRef = FirebaseDatabase.getInstance().getReference("user-mile-log/$userId/$yearWeek/$currentDate")
+        val mileLogRef = FirebaseDatabase.getInstance().getReference(
+                                                "user-mile-log/$userId/$yearWeek/$currentDate")
         val logEntry = mapOf("miles" to newMiles)
 
         mileLogRef.setValue(logEntry).addOnCompleteListener { task ->
             if(task.isSuccessful) {
-                Toast.makeText(this, "Weight log updated successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                                  "Weight log updated successfully", Toast.LENGTH_SHORT).show()
                 callback()
             } else {
-                Toast.makeText(this, "Failed to log weight update", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                                      "Failed to log weight update", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    // initializeDailyLogsIfNeeded handles initializes daily logs for calories and miles if they do
+    // not already exist in Firebase
     private fun initializeDailyLogsIfNeeded(callback: () -> Unit) {
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val yearWeek = SimpleDateFormat("yyyy-'W'ww", Locale.getDefault()).format(Date())
 
-        val caloricLogRef = FirebaseDatabase.getInstance().getReference("user-caloric-log/$userId/$yearWeek/$currentDate")
-        val mileLogRef = FirebaseDatabase.getInstance().getReference("user-mile-log/$userId/$yearWeek/$currentDate")
-
+        val caloricLogRef = FirebaseDatabase.getInstance().getReference(
+                                             "user-caloric-log/$userId/$yearWeek/$currentDate")
+        val mileLogRef = FirebaseDatabase.getInstance().getReference(
+                                                "user-mile-log/$userId/$yearWeek/$currentDate")
         caloricLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(caloricSnapshot: DataSnapshot) {
                 if (!caloricSnapshot.exists()) {
@@ -382,30 +443,27 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                 }
-
                 mileLogRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(mileSnapshot: DataSnapshot) {
                         if (!mileSnapshot.exists()) {
                             // Initialize miles to zero for the new day
                             mileLogRef.child("miles").setValue(0.0).addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Log.d("FirebaseDebug", "Initialized daily miles to zero")
+                                    Log.d("FirebaseDebug","Initialized daily miles to zero")
                                 } else {
-                                    Log.e("FirebaseDebug", "Failed to initialize daily miles")
+                                    Log.e("FirebaseDebug","Failed to initialize daily miles")
                                 }
                             }
                         }
                         // Trigger the callback after initialization checks
                         callback()
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         Log.e("FirebaseDebug", "Error accessing user-mile-log: ${error.message}")
                         callback()
                     }
                 })
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.e("FirebaseDebug", "Error accessing user-caloric-log: ${error.message}")
                 callback()
