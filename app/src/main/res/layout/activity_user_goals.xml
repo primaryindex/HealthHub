@@ -7,7 +7,7 @@
     tools:context=".UserGoalsActivity">
 
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_sex"
+        android:id="@+id/btnSex"
         android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginTop="100dp"
@@ -27,11 +27,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
 
 
     <Button
-        android:id="@+id/btn_activity_level"
+        android:id="@+id/btnActivityLevel"
         android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
@@ -39,10 +39,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sex" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSex" />
 
     <Button
-        android:id="@+id/btn_weight_plan"
+        android:id="@+id/btnWeightPlan"
         android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
@@ -50,11 +50,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_activity_level" />
+        app:layout_constraintTop_toBottomOf="@+id/btnActivityLevel" />
 
 
     <Button
-        android:id="@+id/btn_continue"
+        android:id="@+id/btnContinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_weight_plan"
+        app:layout_constraintTop_toBottomOf="@+id/btnWeightPlan"
         app:layout_constraintVertical_bias="0.576" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

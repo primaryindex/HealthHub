@@ -7,7 +7,7 @@
     tools:context=".WeightLossActivity">
 
     <TextView
-        android:id="@+id/info_WeightLoss"
+        android:id="@+id/tvWeightLoss"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_WeightLoss" />
+        app:layout_constraintTop_toBottomOf="@+id/tvWeightLoss" />
 
     <EditText
-        android:id="@+id/et_Age"
+        android:id="@+id/etAge"
         android:layout_width="250dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
@@ -58,7 +58,7 @@
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_Age" />
+        app:layout_constraintTop_toBottomOf="@+id/etAge" />
 
     <EditText
         android:id="@+id/etHeightIn"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etHeightFt" />
 
     <EditText
-        android:id="@+id/etcurrentWeight"
+        android:id="@+id/etCurrentWeight"
         android:layout_width="250dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
@@ -94,7 +94,7 @@
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etcurrentWeight" />
+        app:layout_constraintTop_toBottomOf="@+id/etCurrentWeight" />
 
     <Button
         android:id="@+id/btnWeeklyGoals"

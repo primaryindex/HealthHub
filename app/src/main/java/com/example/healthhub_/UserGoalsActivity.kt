@@ -41,10 +41,10 @@ class UserGoalsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_goals)
 
         //Get the buttons from the UserGoalsActivity
-        buttonSex = findViewById(R.id.btn_sex)
-        buttonActivityLevel = findViewById(R.id.btn_activity_level)
-        buttonWeightGoal = findViewById(R.id.btn_weight_plan)
-        buttonContinue = findViewById(R.id.btn_continue)
+        buttonSex = findViewById(R.id.btnSex)
+        buttonActivityLevel = findViewById(R.id.btnActivityLevel)
+        buttonWeightGoal = findViewById(R.id.btnWeightPlan)
+        buttonContinue = findViewById(R.id.btnContinue)
 
 
         //Activity Level Selection

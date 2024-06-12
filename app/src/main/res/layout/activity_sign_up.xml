@@ -7,7 +7,7 @@
     tools:context=".SignUpActivity">
 
     <TextView
-        android:id="@+id/textViewSignUp"
+        android:id="@+id/tvSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_sign_up"
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/tvSignUp"
         app:startIconDrawable="@drawable/ic_email">
 
         <com.google.android.material.textfield.TextInputEditText

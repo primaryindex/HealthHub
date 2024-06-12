@@ -54,10 +54,10 @@ class WeightLossActivity : AppCompatActivity() {
         val submitUserInfo = findViewById<TextView>(R.id.btn_submit)
         submitUserInfo.setOnClickListener {
             val full_name = findViewById<EditText>(R.id.etFullName).text.toString()
-            val user_age = findViewById<EditText>(R.id.et_Age).text.toString().toInt()
+            val user_age = findViewById<EditText>(R.id.etAge).text.toString().toInt()
             val height_ft = findViewById<EditText>(R.id.etHeightFt).text.toString().toInt()
             val height_in = findViewById<EditText>(R.id.etHeightIn).text.toString().toInt()
-            val currentWeight = findViewById<EditText>(R.id.etcurrentWeight).text.toString().toDouble()
+            val currentWeight = findViewById<EditText>(R.id.etCurrentWeight).text.toString().toDouble()
             val goal_weight = findViewById<EditText>(R.id.etWeightGoal).text.toString().toDouble()
 
             if (validateInput(height_ft, user_age, height_in, currentWeight, goal_weight)) {
